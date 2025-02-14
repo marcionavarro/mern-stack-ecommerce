@@ -3,7 +3,6 @@ import HandleError from "./../utils/handleError.js";
 import handleAsyncError from "../middleware/handleAsyncError.js";
 import APIFunctionality from "./../utils/apiFunctionality.js";
 
-
 //http://localhost:8000/api/v1/product/67af51402e655bea63b027f1?keyword=shirt
 
 // Creating Products
@@ -17,13 +16,38 @@ export const createProducts = handleAsyncError(async (req, res, next) => {
 
 // Get all Products
 export const getAllProducts = handleAsyncError(async (req, res, next) => {
-  const resultPerPage = 3
-  const apiFunctionality = new APIFunctionality(Product.find(), req.query)
-  .search().filter().pagination(resultPerPage);
-  const products = await apiFunctionality.query;
+  const resultsPerPage = 1;
+  const apiFeatures = new APIFunctionality(Product.find(), req.query)
+    .search().filter();
+
+  // Geting filtered query before pagination
+  const filteredQuery = apiFeatures.query.clone();
+  const productCount = await filteredQuery.countDocuments();
+
+  // Calculate totalpages based on filtered count
+  const totalPages = Math.ceil(productCount / resultsPerPage);
+  const page = Number(req.query.page) || 1;
+  
+
+  if(page > totalPages && productCount > 0){
+    return next(new HandleError("This page doesn't exist", 404));
+  }
+
+  // Apply pagination
+  apiFeatures.pagination(resultsPerPage);
+  const products = await apiFeatures.query;
+
+  if(!products || products.length === 0) {
+    return next(new HandleError("No Product Found", 404));
+  }
+
   res.status(200).json({
     success: true,
     products,
+    productCount,
+    resultsPerPage,
+    totalPages,
+    currentPage: page
   });
 });
 
