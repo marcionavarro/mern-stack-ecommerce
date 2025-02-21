@@ -1,2 +1,7 @@
 /node_modules
 *.txt
+
+.idea/.gitignore
+.idea/MERN_Ecommerce.iml
+.idea/modules.xml
+.idea/vcs.xml
