@@ -6,18 +6,18 @@ import {
     getSingleProduct,
     updateProduct,
 } from "../controller/productController.js";
-import {verifyUserAuth} from "../middleware/userAuth.js";
+import {roleBasedAccess, verifyUserAuth} from "../middleware/userAuth.js";
 
 const router = express.Router();
 
 //Routes
 router.route("/products")
     .get(verifyUserAuth, getAllProducts)
-    .post(createProducts);
+    .post(verifyUserAuth, roleBasedAccess("admin"), createProducts);
 
 router.route("/product/:id")
-    .get(getSingleProduct)
-    .put(updateProduct)
-    .delete(deleteProduct);
+    .get(verifyUserAuth, getSingleProduct)
+    .put(verifyUserAuth,  roleBasedAccess("admin"), updateProduct)
+    .delete(verifyUserAuth,  roleBasedAccess("admin"), deleteProduct);
 
 export default router;
