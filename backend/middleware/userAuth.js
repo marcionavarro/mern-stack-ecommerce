@@ -7,11 +7,10 @@ export const verifyUserAuth = handleAsyncError(async (req, res, next) => {
     const { token } = req.cookies;
     console.log(token);
     if(!token){
-        return next(new HandleError("Authentications is missing ! Please login to access resource", 401))
+        return next(new HandleError("Authentications is missing! Please login to access resource", 401))
     }
 
     const decodedData = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    console.log(decodedData);
     req.user = await User.findById(decodedData.id);
     next();
 })
