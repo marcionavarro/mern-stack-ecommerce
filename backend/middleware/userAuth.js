@@ -5,7 +5,6 @@ import User from "../models/userModel.js"
 
 export const verifyUserAuth = handleAsyncError(async (req, res, next) => {
     const { token } = req.cookies;
-    console.log(token);
     if(!token){
         return next(new HandleError("Authentications is missing! Please login to access resource", 401))
     }
