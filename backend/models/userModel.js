@@ -48,12 +48,15 @@ const userSchema = new mongoose.Schema(
 );
 
 // Password hashing
-userSchema.pre("save", async function () {
-  this.password = await bcrypt.hash(this.password, 10);
-
+userSchema.pre("save", async function (next) {
+  // 1st - updating profile(name, email, image) ---hashed password will be hashed again X
+  // 2st - Update password
   if (!this.isModified("password")) {
     return next();
   }
+
+  this.password = await bcrypt.hash(this.password, 10);
+  next();
 });
 
 userSchema.methods.getJWTToken = function () {
@@ -73,7 +76,7 @@ userSchema.methods.generatePasswordResetToken = function () {
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
-  this.resetPasswordToken = Date.now() + 30 * 60 * 1000; //30minutes
+  this.resetPasswordExpire = Date.now() + 30 * 60 * 1000; //30minutes
   return resetToken;
 };
 
