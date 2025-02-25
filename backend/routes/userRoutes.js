@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  getSingleUser,
   getUserDetails,
   getUsersList,
   loginUser,
@@ -26,5 +27,8 @@ router.route("/profile/update").post(verifyUserAuth, updateProfile);
 router
   .route("/admin/users")
   .get(verifyUserAuth, roleBasedAccess("admin"), getUsersList);
+router
+  .route("/admin/user/:id")
+  .get(verifyUserAuth, roleBasedAccess("admin"), getSingleUser);
 
 export default router;
