@@ -141,4 +141,25 @@ export const getUserDetails = handleAsyncError(async(req, res, next) => {
     user
   })
 
+});
+
+// Update password
+export const updatePassword = handleAsyncError(async (req, res, next) => {
+  const { oldPassword, newPassword, confirmPassword } = req.body;
+  const user = await User.findById(req.user.id)
+  .select('+password');
+
+  const checkPasswordMatch = await user.verifyPassword(oldPassword);
+  
+  if(!checkPasswordMatch){
+    return next(new HandleError('Old password is incorrect', 400));
+  }
+
+  if(newPassword !== confirmPassword) {
+    return next(new HandleError("Password doesn't match", 400));
+  }
+
+  user.password = newPassword;
+  await user.save();
+  sendToken(user, 200, res);
 })
