@@ -5,6 +5,7 @@ import User from "../models/userModel.js";
 import { sendToken } from "../utils/jwtToken.js";
 import { sendEmail } from "../utils/sendEmail.js";
 
+// Register
 export const registerUser = handleAsyncError(async (req, res, next) => {
   const { name, email, password } = req.body;
 
@@ -20,6 +21,7 @@ export const registerUser = handleAsyncError(async (req, res, next) => {
   sendToken(user, 201, res);
 });
 
+// Login
 export const loginUser = handleAsyncError(async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -130,36 +132,55 @@ export const resetPassword = handleAsyncError(async (req, res, next) => {
   user.resetPasswordExpire = undefined;
 
   await user.save();
-  sendToken(user, 200, res)
+  sendToken(user, 200, res);
 });
 
 // Get user details
-export const getUserDetails = handleAsyncError(async(req, res, next) => {
+export const getUserDetails = handleAsyncError(async (req, res, next) => {
   const user = await User.findById(req.user.id);
   res.status(200).json({
     success: true,
-    user
-  })
-
+    user,
+  });
 });
 
 // Update password
 export const updatePassword = handleAsyncError(async (req, res, next) => {
   const { oldPassword, newPassword, confirmPassword } = req.body;
-  const user = await User.findById(req.user.id)
-  .select('+password');
+  const user = await User.findById(req.user.id).select("+password");
 
   const checkPasswordMatch = await user.verifyPassword(oldPassword);
-  
-  if(!checkPasswordMatch){
-    return next(new HandleError('Old password is incorrect', 400));
+
+  if (!checkPasswordMatch) {
+    return next(new HandleError("Old password is incorrect", 400));
   }
 
-  if(newPassword !== confirmPassword) {
+  if (newPassword !== confirmPassword) {
     return next(new HandleError("Password doesn't match", 400));
   }
 
   user.password = newPassword;
   await user.save();
   sendToken(user, 200, res);
-})
+});
+
+// Updating user profile
+export const updateProfile = handleAsyncError(async (req, res, next) => {
+  const { name, email } = req.body;
+
+  const updateUserDetails = {
+    name,
+    email,
+  };
+
+  const user = await User.findByIdAndUpdate(req.user.id, updateUserDetails, {
+    new: true,
+    runValidators: true,
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "Profile Updated Successfully",
+    user,
+  });
+});
