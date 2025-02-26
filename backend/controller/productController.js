@@ -138,6 +138,18 @@ export const createReviewForProduct = handleAsyncError(
   }
 );
 
+// Getting reviews
+export const getReview = handleAsyncError(async (req, res, next) => {
+  const product = await Product.findById(req.query.id);
+  if(!product){
+    return next(new HandleError("Product not found", 400));
+  }
+  res.status(200).json({
+    success: true,
+    reviews: product.reviews
+  })
+});
+
 // Admin - Getting all products
 export const getAdminProducts = handleAsyncError(async (req, res, next) => {
   const products = await Product.find();
