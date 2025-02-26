@@ -10,6 +10,7 @@ import {
   resetPassword,
   updatePassword,
   updateProfile,
+  updateUserRole,
 } from "../controller/userController.js";
 import { roleBasedAccess, verifyUserAuth } from "../middleware/userAuth.js";
 
@@ -29,6 +30,7 @@ router
   .get(verifyUserAuth, roleBasedAccess("admin"), getUsersList);
 router
   .route("/admin/user/:id")
-  .get(verifyUserAuth, roleBasedAccess("admin"), getSingleUser);
+  .get(verifyUserAuth, roleBasedAccess("admin"), getSingleUser)
+  .put(verifyUserAuth, roleBasedAccess("admin"), updateUserRole);
 
 export default router;
