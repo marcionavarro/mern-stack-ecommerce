@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  deleteUser,
   getSingleUser,
   getUserDetails,
   getUsersList,
@@ -31,6 +32,7 @@ router
 router
   .route("/admin/user/:id")
   .get(verifyUserAuth, roleBasedAccess("admin"), getSingleUser)
-  .put(verifyUserAuth, roleBasedAccess("admin"), updateUserRole);
+  .put(verifyUserAuth, roleBasedAccess("admin"), updateUserRole)
+  .delete(verifyUserAuth, roleBasedAccess("admin"), deleteUser);
 
 export default router;
