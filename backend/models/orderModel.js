@@ -66,35 +66,35 @@ const orderSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
-    paidAt: {
-      type: Date,
-      required: true,
-    },
-    itemPrice: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
-    taxPrice: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
-    shippingPrice: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
-    totalPrice: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
-    deliveredAt: Date,
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
+  },
+  paidAt: {
+    type: Date,
+    required: true,
+  },
+  itemPrice: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  taxPrice: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  shippingPrice: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  totalPrice: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  deliveredAt: Date,
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
 });
 
