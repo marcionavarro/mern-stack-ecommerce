@@ -91,15 +91,32 @@ export const updateOrderStatus = handleAsyncError(async (req, res, next) => {
     return next(new HandleError("this order is already been delivered", 404));
   }
 
-  await Promise.all(order.orderItems.map((item) => console.log(item)));
   order.orderStatus = req.body.status;
 
   if (order.orderStatus === "Delivered") {
     order.deliveredAt = Date.now();
+    await Promise.all(
+      order.orderItems.map((item) =>
+        updateQuantity(item.product, item.quantity)
+      )
+    );
   }
+
+  await order.save({ validateBeforeSave: false });
 
   res.status(200).json({
     success: true,
     order,
   });
 });
+
+async function updateQuantity(id, quantity) {
+  const product = await Product.findById(id);
+
+  if (!product) {
+    return next(new HandleError("Product not fount", 404));
+  }
+
+  product.stock -= quantity;
+  await product.save({ validateBeforeSave: false });
+}
