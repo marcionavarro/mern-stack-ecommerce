@@ -68,13 +68,38 @@ export const getAllOrders = handleAsyncError(async (req, res, next) => {
   const orders = await Order.find();
 
   let totalAmount = 0;
-  orders.forEach(order => {
-    totalAmount += order.totalPrice
-  })
+  orders.forEach((order) => {
+    totalAmount += order.totalPrice;
+  });
 
   res.status(200).json({
     success: true,
     orders,
-    totalAmount
+    totalAmount,
+  });
+});
+
+//  Update order status
+export const updateOrderStatus = handleAsyncError(async (req, res, next) => {
+  const order = await Order.findById(req.params.id);
+
+  if (!order) {
+    return next(new HandleError("No order found", 404));
+  }
+
+  if (order.orderStatus === "Delivered") {
+    return next(new HandleError("this order is already been delivered", 404));
+  }
+
+  await Promise.all(order.orderItems.map((item) => console.log(item)));
+  order.orderStatus = req.body.status;
+
+  if (order.orderStatus === "Delivered") {
+    order.deliveredAt = Date.now();
+  }
+
+  res.status(200).json({
+    success: true,
+    order,
   });
 });

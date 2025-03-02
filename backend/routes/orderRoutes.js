@@ -5,6 +5,7 @@ import {
   createNewOrder,
   getAllOrders,
   getSingleOrder,
+  updateOrderStatus,
 } from "../controller/orderController.js";
 
 const router = express.Router();
@@ -12,7 +13,8 @@ const router = express.Router();
 router.route("/new/order").post(verifyUserAuth, createNewOrder);
 router
   .route("/admin/order/:id")
-  .get(verifyUserAuth, roleBasedAccess("admin"), getSingleOrder);
+  .get(verifyUserAuth, roleBasedAccess("admin"), getSingleOrder)
+  .put(verifyUserAuth, roleBasedAccess("admin"), updateOrderStatus);
 router
   .route("/admin/orders")
   .get(verifyUserAuth, roleBasedAccess("admin"), getAllOrders);
