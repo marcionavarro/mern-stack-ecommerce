@@ -62,3 +62,19 @@ export const allMyOrders = handleAsyncError(async (req, res, next) => {
     orders,
   });
 });
+
+//  Getting All orders
+export const getAllOrders = handleAsyncError(async (req, res, next) => {
+  const orders = await Order.find();
+
+  let totalAmount = 0;
+  orders.forEach(order => {
+    totalAmount += order.totalPrice
+  })
+
+  res.status(200).json({
+    success: true,
+    orders,
+    totalAmount
+  });
+});
