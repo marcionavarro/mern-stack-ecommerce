@@ -32,7 +32,7 @@ function Navbar() {
               <Link to="/products">Products</Link>
             </li>
             <li>
-              <Link to="/about-us">About Us</Link>
+              <Link to="/about-us">About Us</Link> 
             </li>
             <li>
               <Link to="/contact-us">Contact Us</Link>
