@@ -21,7 +21,7 @@ const products = [
     ],
     category: "phone",
     stock: 0,
-    numOfReviews: 0,
+    numOfReviews: 1,
     reviews: [
       {
         user: "67bce99c4d54d700a19c4a6d",
@@ -49,7 +49,7 @@ const products = [
     ],
     category: "mobile",
     stock: 1,
-    numOfReviews: 1,
+    numOfReviews: 2,
     reviews: [
       {
         user: "67bce99c4d54d700a19c4a6d",
