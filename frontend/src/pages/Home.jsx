@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Footer from "../components/Footer";
 import "../pageStyles/Home.css";
 import Navbar from "../components/Navbar";
 import { ImageSlider } from "../components/ImageSlider";
 import Product from "../components/Product";
 import PageTitle from "../components/PageTitle";
+import { getProduct } from "../features/products/productSlice";
 
-const products = [
+/* const products = [
   {
     _id: "67af628161452d7d2bcbf86d",
     name: "Product 2",
@@ -63,9 +65,18 @@ const products = [
     createdAt: "2025-02-14T15:35:00.519Z",
     __v: 2,
   },
-];
+]; */
 
 function Home() {
+  const { loading, error, products, productCount } = useSelector(
+    (state) => state.product
+  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getProduct());
+  }, [dispatch]);
+
   return (
     <>
       <PageTitle title="Home-My Website" />

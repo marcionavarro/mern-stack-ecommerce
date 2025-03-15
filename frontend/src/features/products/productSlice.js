@@ -6,8 +6,9 @@ export const getProduct = createAsyncThunk(
   async (_, rejectWithValue) => {
     try {
       const link = "/api/v1/products";
-      const data = await axios.get(link);
+      const { data } = await axios.get(link);
       console.log("Response", data);
+      return data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "An error occurred");
     }
@@ -38,11 +39,11 @@ const productSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.products = action.payload.products;
-        state.productCount = action.payload.productCount
+        state.productCount = action.payload.productCount;
       })
       .addCase(getProduct.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || 'Somthing went wrong';
+        state.error = action.payload || "Somthing went wrong";
       });
   },
 });
