@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const getProduct = createAsyncThunk(
   "product/getProduct",
-  async (_, rejectWithValue) => {
+  async (_, {rejectWithValue}) => {
     try {
       const link = "/api/v1/products";
       const { data } = await axios.get(link);
@@ -43,7 +43,7 @@ const productSlice = createSlice({
       })
       .addCase(getProduct.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || "Somthing went wrong";
+        state.error = action.payload || "Something went wrong";
       });
   },
 });
