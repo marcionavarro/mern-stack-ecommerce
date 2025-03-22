@@ -2,27 +2,27 @@ import React, { useState } from "react";
 import "../componentStyles/Rating.css";
 import { Star } from "@mui/icons-material";
 
-function Rating({ value, onRatingChange, disable }) {
+function Rating({ value, onRatingChange, disabled }) {
   const [hoverRating, setHoverRating] = useState(0);
   const [selectedRating, setSelectedRating] = useState(value || 0);
 
   // Handle star hover
   const handleMouseEnter = (rating) => {
-    if (!disable) {
+    if (!disabled) {
       setHoverRating(rating);
     }
   };
 
   // Mouse leave
   const handleMouseLeave = () => {
-    if (!disable) {
+    if (!disabled) {
       setHoverRating(0);
     }
   };
 
   // Handle click
   const handleClick = (rating) => {
-    if (!disable) {
+    if (!disabled) {
       setHoverRating(rating);
       if (onRatingChange) {
         onRatingChange(rating);
@@ -39,7 +39,7 @@ function Rating({ value, onRatingChange, disable }) {
         <span
           key={i}
           className={`star ${isFilled ? "filled" : "empty"}`}
-          style={{pointerEvents: disable ? 'none' : 'auto'}}
+          style={{pointerEvents: disabled ? 'none' : 'auto'}}
           onMouseEnter={() => handleMouseEnter}
           onMouseLeave={() => handleMouseLeave}
           onClick={() => handleClick}
