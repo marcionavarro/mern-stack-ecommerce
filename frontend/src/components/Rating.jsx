@@ -23,7 +23,7 @@ function Rating({ value, onRatingChange, disabled }) {
   // Handle click
   const handleClick = (rating) => {
     if (!disabled) {
-      setHoverRating(rating);
+      setSelectedRating(rating);
       if (onRatingChange) {
         onRatingChange(rating);
       }
@@ -40,9 +40,9 @@ function Rating({ value, onRatingChange, disabled }) {
           key={i}
           className={`star ${isFilled ? "filled" : "empty"}`}
           style={{pointerEvents: disabled ? 'none' : 'auto'}}
-          onMouseEnter={() => handleMouseEnter}
-          onMouseLeave={() => handleMouseLeave}
-          onClick={() => handleClick}
+          onMouseEnter={() => handleMouseEnter(i)}
+          onMouseLeave={handleMouseLeave}
+          onClick={() => handleClick(i)}
         >
           <Star />
         </span>
