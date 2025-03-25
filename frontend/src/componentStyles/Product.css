@@ -87,7 +87,14 @@
   font-weight: bold;
   color: var(--primary-main);
   margin-bottom: 1rem;
-  /* padding-left: 75px; */
+  padding-left: 75px;
+}
+
+.product-price-details {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--primary-main);
+  margin-bottom: 1rem;
 }
 
 .add-to-cart {

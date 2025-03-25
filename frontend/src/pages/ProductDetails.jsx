@@ -1,9 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import PageTitle from "../components/PageTitle";
 import Rating from "../components/Rating";
 import "../pageStyles/ProductDetails.css";
+import { useParams } from "react-router-dom";
+import {
+  getProductDetails,
+  removeErrors,
+} from "../features/products/productSlice";
+import { toast } from "react-toastify";
+import Loader from "../components/Loader";
 
 function ProductDetails() {
   const [userRating, setUserRating] = useState(0);
@@ -12,23 +20,71 @@ function ProductDetails() {
     setUserRating(newRating);
   };
 
+  const { loading, error, product } = useSelector((state) => state.product);
+  const dispatch = useDispatch();
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (id) {
+      dispatch(getProductDetails(id));
+    }
+
+    return () => {
+      dispatch(removeErrors());
+    };
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message, { position: "top-center", autoClose: 3000 });
+      dispatch(removeErrors());
+    }
+  }, [dispatch, error]);
+
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <Loader />
+        <Footer />
+      </>
+    );
+  }
+
+  if (error || !product) {
+    return (
+      <>
+        <Navbar />
+        <PageTitle title="Product - Details" />
+        <Footer />
+      </>
+    );
+  }
+
   return (
     <>
-      <PageTitle title="Product Name - Details" />
+      <PageTitle title={`${product.name} - Details`} />
       <Navbar />
       <div className="product-details-container">
         <div className="product-detail-container">
           <div className="product-image-container">
-            <img src="" alt="Product Title" className="product-detail-image" />
+            <img
+              src={product.image[0].url.replace("./", "/")}
+              alt={product.name}
+              className="product-detail-image"
+            />
           </div>
 
           <div className="product-info">
-            <h2>Product Name</h2>
-            <p className="product-description">Product Description</p>
-            <p className="product-price">Price: 200/-</p>
+            <h2>{product.name}</h2>
+            <p className="product-description">{product.description}</p>
+            <p className="product-price-details">Price: {product.price}/-</p>
             <div className="product-rating">
-              <Rating value={2} disabled={true} />
-              <span className="productCardSpan">(1 Review)</span>
+              <Rating value={product.ratings} disabled={true} />
+              <span className="productCardSpan">
+                ({product.numOfReviews}{" "}
+                {product.numOfReviews === 1 ? "Review" : "Reviews"})
+              </span>
             </div>
 
             <div className="stock-status">
