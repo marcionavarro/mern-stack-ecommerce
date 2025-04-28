@@ -48,7 +48,9 @@ function Pagination({
       {/* Display Numbers */}
       {getPageNumbers().map((number) => (
         <button
-          className="pagination-btn"
+          className={`pagination-btn ${
+            currentPage === number ? activeClass : ""
+          }`}
           key={number}
           onClick={() => onPageChange(number)}
         >
@@ -60,9 +62,7 @@ function Pagination({
       {currentPage < totalPages && (
         <>
           <button
-            className={`pagination-btn ${
-              currentPage === number ? activeClass : ""
-            }`}
+            className="pagination-btn"
             onClick={() => onPageChange(currentPage + 1)}
           >
             {nextPageText}

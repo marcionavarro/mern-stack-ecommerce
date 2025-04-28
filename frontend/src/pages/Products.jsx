@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../pageStyles/Products.css";
 import PageTitle from "../components/PageTitle";
 import Navbar from "../components/Navbar";
@@ -7,21 +7,25 @@ import { useDispatch, useSelector } from "react-redux";
 import Product from "../components/Product";
 import { getProduct, removeErrors } from "../features/products/productSlice";
 import Loader from "../components/Loader";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import NoProducts from "../components/NoProducts";
+import Pagination from "../components/Pagination";
 
 function Products() {
-  const { loading, error, products, resultsPerPage, productCount} = useSelector((state) => state.product);
+  const { loading, error, products, resultsPerPage, productCount } =
+    useSelector((state) => state.product);
   const dispatch = useDispatch();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const keyword = searchParams.get("keyword");
-  console.log(keyword)
+  const pageFromUrl = parseInt(searchParams.get("page"), 10) || 1;
+  const [currentPage, setCurrentPage] = useState(pageFromUrl);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(getProduct({keyword}));
-  }, [dispatch, keyword]);
+    dispatch(getProduct({ keyword, page: currentPage }));
+  }, [dispatch, keyword, currentPage]);
 
   useEffect(() => {
     if (error) {
@@ -29,6 +33,19 @@ function Products() {
       dispatch(removeErrors());
     }
   }, [dispatch, error]);
+
+  const handlePageChange = (page) => {
+    if (page !== currentPage) {
+      setCurrentPage(page);
+      const newUrlSearchParams = new URLSearchParams(location.search);
+      if(page === 1){
+        newUrlSearchParams.delete('page');
+      }else {
+        newUrlSearchParams.set('page', page);
+      }
+      navigate(`?${newUrlSearchParams.toString()}`)
+    }
+  };
 
   return (
     <>
@@ -44,13 +61,19 @@ function Products() {
               {/* Render Categories */}
             </div>
             <div className="products-section">
-              {products.length > 0 ? (<div className="products-product-container">
-                {products.map((product) => (
-                  <Product key={product._id} product={product} />
-                ))}
-              </div>) : (
-                <NoProducts keyword={keyword}/>
+              {products.length > 0 ? (
+                <div className="products-product-container">
+                  {products.map((product) => (
+                    <Product key={product._id} product={product} />
+                  ))}
+                </div>
+              ) : (
+                <NoProducts keyword={keyword} />
               )}
+              <Pagination
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+            />
             </div>
           </div>
           <Footer />
