@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 import NoProducts from "../components/NoProducts";
 
 function Products() {
-  const { loading, error, products } = useSelector((state) => state.product);
+  const { loading, error, products, resultsPerPage, productCount} = useSelector((state) => state.product);
   const dispatch = useDispatch();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);

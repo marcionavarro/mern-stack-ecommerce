@@ -6,7 +6,7 @@ function NoProducts({keyword}) {
   return (
     <div className='no-products-content'>
         <div className='no-products-icon'><img src={atentionIcon} width={80}/></div>
-        <h3 className='no-product-title'>No Products Found</h3>
+        <h3 className='no-products-title'>No Products Found</h3>
         <p className="no-products-message">
             {keyword 
             ? `We couldn't find any products matching "${keyword}". Try using different keywords or browse our complete catalog.` 
