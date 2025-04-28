@@ -5,9 +5,10 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import Product from "../components/Product";
-import { getProduct } from "../features/products/productSlice";
+import { getProduct, removeErrors } from "../features/products/productSlice";
 import Loader from "../components/Loader";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Products() {
   const { loading, error, products } = useSelector((state) => state.product);
@@ -18,8 +19,8 @@ function Products() {
   console.log(keyword)
 
   useEffect(() => {
-    dispatch(getProduct());
-  }, [dispatch]);
+    dispatch(getProduct({keyword}));
+  }, [dispatch, keyword]);
 
   useEffect(() => {
     if (error) {
