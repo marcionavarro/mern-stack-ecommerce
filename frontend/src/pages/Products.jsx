@@ -19,13 +19,15 @@ function Products() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const keyword = searchParams.get("keyword");
+  const category = searchParams.get("category");
   const pageFromUrl = parseInt(searchParams.get("page"), 10) || 1;
   const [currentPage, setCurrentPage] = useState(pageFromUrl);
   const navigate = useNavigate();
+  const categories = ["laptop", "mobile", "tv", "fruits", "glass"];
 
   useEffect(() => {
-    dispatch(getProduct({ keyword, page: currentPage }));
-  }, [dispatch, keyword, currentPage]);
+    dispatch(getProduct({ keyword, page: currentPage, category }));
+  }, [dispatch, keyword, currentPage, category]);
 
   useEffect(() => {
     if (error) {
@@ -47,6 +49,13 @@ function Products() {
     }
   };
 
+  const handleCategoryClick = (category) => {
+    const newUrlSearchParams = new URLSearchParams(location.search);
+    newUrlSearchParams.set('category', category);
+    newUrlSearchParams.delete('page');
+    navigate(`?${newUrlSearchParams.toString()}`)
+  }
+
   return (
     <>
       {loading ? (
@@ -59,6 +68,13 @@ function Products() {
             <div className="filter-section">
               <h3 className="filter-heading">CATEGORIES</h3>
               {/* Render Categories */}
+              <ul>
+                {categories.map((category) => {
+                  return (
+                    <li key={category} onClick={() => handleCategoryClick(category)}>{category}</li>
+                  )
+                })}
+              </ul>
             </div>
             <div className="products-section">
               {products.length > 0 ? (
