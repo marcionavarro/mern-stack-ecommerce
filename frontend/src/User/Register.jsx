@@ -1,7 +1,13 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import "../UserStyles/Form.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import {
+  register,
+  removeErrors,
+  removeSuccess,
+} from "../features/user/userSlice";
 
 function Register() {
   const [user, setUser] = useState({
@@ -12,6 +18,9 @@ function Register() {
   const [avatar, setAvatar] = useState("");
   const [avatarPreview, setAvatarPreview] = useState("/images/profile.png");
   const { name, email, password } = user;
+  const { success, loading, error } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const registerDataChange = (e) => {
     if (e.target.name === "avatar") {
@@ -42,17 +51,38 @@ function Register() {
     myForm.set("email", email);
     myForm.set("password", password);
     myForm.set("avatar", avatar);
-    for(let pair of myForm.entries()){
-      console.log(pair[0]+ ' - ' + pair[1]);
+    for (let pair of myForm.entries()) {
+      console.log(pair[0] + " - " + pair[1]);
     }
+    dispatch(register(myForm));
   };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error, { position: "top-center", autoClose: 3000 });
+      dispatch(removeErrors());
+    }
+  }, [dispatch, error]);
+
+  useEffect(() => {
+    if (success) {
+      toast.success("Registration SuccessFull", {
+        position: "top-center",
+        autoClose: 3000,
+      });
+      dispatch(removeSuccess());
+      navigate("/login");
+    }
+  }, [dispatch, success]);
 
   return (
     <div className="form-container">
-      {" "}
-      {/* container */}
       <div className="form-content">
-        <form className="form" onSubmit={registerSubmit} encType="multipart/form-data">
+        <form
+          className="form"
+          onSubmit={registerSubmit}
+          encType="multipart/form-data"
+        >
           <h2>Sign Up</h2>
           <div className="input-group">
             <input
