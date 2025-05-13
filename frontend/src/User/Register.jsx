@@ -52,7 +52,7 @@ function Register() {
       {" "}
       {/* container */}
       <div className="form-content">
-        <form className="form" onSubmit={registerSubmit}>
+        <form className="form" onSubmit={registerSubmit} encType="multipart/form-data">
           <h2>Sign Up</h2>
           <div className="input-group">
             <input
