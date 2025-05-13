@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../UserStyles/Form.css";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Register() {
   const [user, setUser] = useState({
@@ -27,12 +28,31 @@ function Register() {
     }
   };
 
+  const registerSubmit = (e) => {
+    e.preventDefault();
+    if (!name || !email || !password) {
+      toast.error("Please fill out all the required fields", {
+        position: "top-center",
+        autoClose: 3000,
+      });
+      return;
+    }
+    const myForm = new FormData();
+    myForm.set("name", name);
+    myForm.set("email", email);
+    myForm.set("password", password);
+    myForm.set("avatar", avatar);
+    for(let pair of myForm.entries()){
+      console.log(pair[0]+ ' - ' + pair[1]);
+    }
+  };
+
   return (
     <div className="form-container">
       {" "}
       {/* container */}
       <div className="form-content">
-        <form className="form">
+        <form className="form" onSubmit={registerSubmit}>
           <h2>Sign Up</h2>
           <div className="input-group">
             <input
