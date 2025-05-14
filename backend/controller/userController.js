@@ -4,18 +4,24 @@ import HandleError from "../utils/handleError.js";
 import User from "../models/userModel.js";
 import { sendToken } from "../utils/jwtToken.js";
 import { sendEmail } from "../utils/sendEmail.js";
+import { v2 as cloudinary } from "cloudinary";
 
 // Register
 export const registerUser = handleAsyncError(async (req, res, next) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, avatar } = req.body;
+  const myCloud = await cloudinary.uploader.upload(avatar, {
+    folder: "avatars",
+    width: 150,
+    crop: "scale",
+  });
 
   const user = await User.create({
     name,
     email,
     password,
     avatar: {
-      public_id: "This is temp id",
-      url: "This is temp url",
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
     },
   });
   sendToken(user, 201, res);
@@ -213,16 +219,16 @@ export const updateUserRole = handleAsyncError(async (req, res, next) => {
   const { role } = req.body;
 
   const newUserData = {
-    role
+    role,
   };
 
   const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
     new: true,
-    runValidators: true
+    runValidators: true,
   });
 
-  if(!user) {
-    return next(new HandleError("User doesn't exist", 400))
+  if (!user) {
+    return next(new HandleError("User doesn't exist", 400));
   }
 
   res.status(200).json({
@@ -235,14 +241,14 @@ export const updateUserRole = handleAsyncError(async (req, res, next) => {
 export const deleteUser = handleAsyncError(async (req, res, next) => {
   const user = await User.findById(req.params.id);
 
-  if(!user) {
-    return next(new HandleError("User doesn't exist", 400))
+  if (!user) {
+    return next(new HandleError("User doesn't exist", 400));
   }
 
   await User.findByIdAndDelete(req.params.id);
 
   res.status(200).json({
     success: true,
-    message: 'User Deleted Successfully',
+    message: "User Deleted Successfully",
   });
 });
