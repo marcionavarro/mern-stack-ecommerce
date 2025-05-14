@@ -46,6 +46,20 @@ export const login = createAsyncThunk(
   }
 );
 
+export const loadUser = createAsyncThunk(
+  "user/loadUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get("/api/v1/profile");
+      return data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data || "Failed to user profile"
+      );
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -86,7 +100,7 @@ const userSlice = createSlice({
         state.isAuhtenticated = false;
       });
 
-    // Login cases
+    // Login User
     builder
       .addCase(login.pending, (state) => {
         state.loading = true;
@@ -103,8 +117,27 @@ const userSlice = createSlice({
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
         state.error =
-          action.payload?.message ||
-          "Registration failed. Please try again later";
+          action.payload?.message || "Login failed. Please try again later";
+        state.user = null;
+        state.isAuhtenticated = false;
+      });
+
+      // Loading User
+    builder
+      .addCase(loadUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loadUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.user = action.payload?.user || null;
+        state.isAuhtenticated = Boolean(action.payload?.user);
+      })
+      .addCase(loadUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          action.payload?.message || "Failed to user profile";
         state.user = null;
         state.isAuhtenticated = false;
       });
