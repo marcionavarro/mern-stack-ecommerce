@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 function Login() {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginassword] = useState("");
-  const { error, loading, success, isAuhtenticated } = useSelector(
+  const { error, loading, success, isAuthenticated } = useSelector(
     (state) => state.user
   );
   const dispatch = useDispatch();
@@ -29,10 +29,10 @@ function Login() {
 
   useEffect(() => {
     
-    if (isAuhtenticated) {
+    if (isAuthenticated) {
       navigate("/");
     }
-  }, [isAuhtenticated]);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (success) {

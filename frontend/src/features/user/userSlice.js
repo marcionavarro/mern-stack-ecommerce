@@ -67,7 +67,7 @@ const userSlice = createSlice({
     loading: false,
     error: null,
     success: false,
-    isAuhtenticated: false,
+    isAuthenticated: false,
   },
   reducers: {
     removeErrors: (state) => {
@@ -89,7 +89,7 @@ const userSlice = createSlice({
         state.error = null;
         state.success = action.payload.success;
         state.user = action.payload?.user || null;
-        state.isAuhtenticated = Boolean(action.payload?.user);
+        state.isAuthenticated = Boolean(action.payload?.user);
       })
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
@@ -97,7 +97,7 @@ const userSlice = createSlice({
           action.payload?.message ||
           "Registration failed. Please try again later";
         state.user = null;
-        state.isAuhtenticated = false;
+        state.isAuthenticated = false;
       });
 
     // Login User
@@ -111,7 +111,7 @@ const userSlice = createSlice({
         state.error = null;
         state.success = action.payload.success;
         state.user = action.payload?.user || null;
-        state.isAuhtenticated = Boolean(action.payload?.user);
+        state.isAuthenticated = Boolean(action.payload?.user);
         console.log(state.user);
       })
       .addCase(login.rejected, (state, action) => {
@@ -119,7 +119,7 @@ const userSlice = createSlice({
         state.error =
           action.payload?.message || "Login failed. Please try again later";
         state.user = null;
-        state.isAuhtenticated = false;
+        state.isAuthenticated = false;
       });
 
       // Loading User
@@ -132,14 +132,14 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.user = action.payload?.user || null;
-        state.isAuhtenticated = Boolean(action.payload?.user);
+        state.isAuthenticated = Boolean(action.payload?.user);
       })
       .addCase(loadUser.rejected, (state, action) => {
         state.loading = false;
         state.error =
           action.payload?.message || "Failed to user profile";
         state.user = null;
-        state.isAuhtenticated = false;
+        state.isAuthenticated = false;
       });
   },
 });
