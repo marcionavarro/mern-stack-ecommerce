@@ -24,14 +24,18 @@ export const register = createAsyncThunk(
 
 export const login = createAsyncThunk(
   "user/login",
-  async ({email, password}, { rejectWithValue }) => {
+  async ({ email, password }, { rejectWithValue }) => {
     try {
       const config = {
         headers: {
           "Content-Type": "application/json",
         },
       };
-      const { data } = await axios.post("/api/v1/login", {email, password}, config);
+      const { data } = await axios.post(
+        "/api/v1/login",
+        { email, password },
+        config
+      );
       console.log("Login data", data);
       return data;
     } catch (error) {
@@ -82,7 +86,7 @@ const userSlice = createSlice({
         state.isAuhtenticated = false;
       });
 
-      // Login cases
+    // Login cases
     builder
       .addCase(login.pending, (state) => {
         state.loading = true;
@@ -94,6 +98,7 @@ const userSlice = createSlice({
         state.success = action.payload.success;
         state.user = action.payload?.user || null;
         state.isAuhtenticated = Boolean(action.payload?.user);
+        console.log(state.user);
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
