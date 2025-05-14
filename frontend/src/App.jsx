@@ -17,7 +17,7 @@ export default function App() {
     if (isAuthenticated) {
       dispatch(loadUser());
     }
-  }, [dispatch]);
+  }, [dispatch, isAuthenticated]);
 
   console.log(isAuthenticated, user);
 
