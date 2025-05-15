@@ -8,6 +8,7 @@ import Login from "./User/Login";
 import { useDispatch, useSelector } from "react-redux";
 import { loadUser } from "./features/user/userSlice";
 import UserDashboard from "./User/UserDashboard";
+import Profile from "./User/Profile";
 
 export default function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -30,6 +31,8 @@ export default function App() {
         <Route path="/products/:keyword" element={<Products />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
       {isAuthenticated && <UserDashboard user={user} />}
     </Router>
