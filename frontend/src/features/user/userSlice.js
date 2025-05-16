@@ -112,7 +112,7 @@ export const updatePassword = createAsyncThunk(
         },
       };
       const { data } = await axios.put(
-        "/api/v1/update/password",
+        "/api/v1/password/update",
         formData,
         config
       );
@@ -254,7 +254,7 @@ const userSlice = createSlice({
       })
       .addCase(updatePassword.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || "Password update failed.";
+        state.error = action.payload?.message || "Password update failed.";
       });
   },
 });
