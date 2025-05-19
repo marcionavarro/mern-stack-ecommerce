@@ -3,8 +3,11 @@ import NavBar from "../components/Navbar";
 import Footer from "../components/Footer";
 import "../CartStyles/Cart.css";
 import CartItem from "./CartItem";
+import { useSelector } from "react-redux";
 
 function Cart() {
+  const { cartItems } = useSelector((state) => state.cart);
+  console.log(cartItems);
   return (
     <>
       <PageTitle title="Your Cart" />
@@ -21,7 +24,7 @@ function Cart() {
             </div>
 
             {/* Cart Items */}
-            <CartItem />
+            {cartItems && cartItems.map((item) => <CartItem item={item} key={item.name} />)}
           </div>
         </div>
 

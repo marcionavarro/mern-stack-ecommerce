@@ -55,7 +55,7 @@ const cartSlice = createSlice({
 
         if (existingItem) {
           existingItem.quantity = item.quantity;
-          state.message = `Updated ${item.name} quantity to in the cart}`;
+          state.message = `Updated ${item.name} quantity to in the cart`;
         } else {
           state.cartItems.push(item);
           state.message = `${item.name} is added to cart successfully`;
