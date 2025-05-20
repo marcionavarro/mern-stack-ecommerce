@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import {
   addItemsToCart,
   removeErrors,
+  removeItemFromCart,
   removeMessage,
 } from "../features/cart/cartSlice";
 
@@ -63,6 +64,16 @@ function CartItem({ item }) {
     }
   }, [dispatch, success, message]);
 
+  const handleRemove = () => {
+    if (loading) return;
+    dispatch(removeItemFromCart(item.product));
+    toast.success("Item removed from cart successfully", {
+      position: "top-center",
+      autoClose: 3000,
+      toastId: "cart-update",
+    });
+  };
+
   return (
     <div className="cart-item">
       <div className="item-info">
@@ -117,7 +128,13 @@ function CartItem({ item }) {
         >
           {loading ? "Updating..." : "Update"}
         </button>
-        <button className="remove-item-btn">Remove</button>
+        <button
+          className="remove-item-btn"
+          disabled={loading}
+          onClick={handleRemove}
+        >
+          Remove
+        </button>
       </div>
     </div>
   );
