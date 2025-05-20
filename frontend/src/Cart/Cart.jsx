@@ -9,6 +9,13 @@ import { Link } from "react-router-dom";
 function Cart() {
   const { cartItems } = useSelector((state) => state.cart);
   console.log(cartItems);
+  const subtotal = cartItems.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
+  const tax = subtotal * 0.18;
+  const shipping = subtotal > 500 ? 0 : 50;
+  const total = subtotal + tax + shipping;
   return (
     <>
       <PageTitle title="Your Cart" />
@@ -48,22 +55,22 @@ function Cart() {
               <h3 className="price-summary-heading">Price Summary</h3>
               <div className="summary-item">
                 <div className="summary-label">Subtotal:</div>
-                <div className="summary-value">200/-</div>
+                <div className="summary-value">{subtotal}/-</div>
               </div>
 
               <div className="summary-item">
                 <div className="summary-label">Tax(18%):</div>
-                <div className="summary-value">10/-</div>
+                <div className="summary-value">{tax}/-</div>
               </div>
 
               <div className="summary-item">
                 <div className="summary-label">shipping:</div>
-                <div className="summary-value">50/-</div>
+                <div className="summary-value">{shipping}/-</div>
               </div>
 
               <div className="summary-total">
                 <div className="total-label">total:</div>
-                <div className="total-value">260/-</div>
+                <div className="total-value">{total}/-</div>
               </div>
               <button className="checkout-btn">Procced to Checkout</button>
             </div>

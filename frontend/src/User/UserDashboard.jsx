@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../UserStyles/UserDashboard.css";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   logout,
   removeErrors,
@@ -13,6 +13,7 @@ function UserDashboard({ user }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [menuVisible, setMenuVisible] = useState(false);
+  const { cartItems } = useSelector((state) => state.cart);
 
   function toggleMenu() {
     setMenuVisible(!menuVisible);
@@ -21,6 +22,7 @@ function UserDashboard({ user }) {
   const options = [
     { name: "Orders", funcName: orders },
     { name: "Account", funcName: profile },
+    { name: `Cart(${cartItems.length})`, funcName: myCart, isCart: true },
     { name: "Logout", funcName: logoutUser },
   ];
 
@@ -63,9 +65,16 @@ function UserDashboard({ user }) {
     navigate("/admin/dashboard");
   }
 
+  function myCart() {
+    navigate("/cart");
+  }
+
   return (
     <>
-    <div className={`overlay ${menuVisible ? 'show' : ''}`} onClick={toggleMenu}></div>
+      <div
+        className={`overlay ${menuVisible ? "show" : ""}`}
+        onClick={toggleMenu}
+      ></div>
       <div className="dashboard-container">
         <div className="profile-header" onClick={toggleMenu}>
           <img
@@ -79,7 +88,13 @@ function UserDashboard({ user }) {
               {options.map((item) => (
                 <button
                   key={item.name}
-                  className="menu-option-btn"
+                  className={`menu-option-btn ${
+                    item.isCart
+                      ? cartItems.length > 0
+                        ? "cart-not-empty"
+                        : ""
+                      : ""
+                  }`}
                   onClick={item.funcName}
                 >
                   {item.name}
