@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import "../CartStyles/Cart.css";
 import CartItem from "./CartItem";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Cart() {
   const { cartItems } = useSelector((state) => state.cart);
@@ -16,6 +16,12 @@ function Cart() {
   const tax = subtotal * 0.18;
   const shipping = subtotal > 500 ? 0 : 50;
   const total = subtotal + tax + shipping;
+  const navigate = useNavigate();
+
+  const checkoutHandler = () => {
+    navigate(`/login?redirect=/shipping`);
+  };
+
   return (
     <>
       <PageTitle title="Your Cart" />
@@ -72,7 +78,9 @@ function Cart() {
                 <div className="total-label">total:</div>
                 <div className="total-value">{total}/-</div>
               </div>
-              <button className="checkout-btn">Procced to Checkout</button>
+              <button className="checkout-btn" onClick={checkoutHandler}>
+                Procced to Checkout
+              </button>
             </div>
           </div>
         </>
