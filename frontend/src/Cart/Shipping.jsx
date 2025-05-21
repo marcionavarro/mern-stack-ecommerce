@@ -2,6 +2,7 @@ import React from "react";
 import PageTitle from "../components/PageTitle";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
+import CheckoutPath from "./CheckoutPath";
 import "../CartStyles/Shipping.css";
 
 function Shipping() {
@@ -9,6 +10,7 @@ function Shipping() {
     <>
       <PageTitle title="Shipping Info" />
       <NavBar />
+      <CheckoutPath activePath={2} />
       <div className="shipping-form-container">
         <div className="shipping-form-header">Shipping Details</div>
         <form className="shipping-form">
