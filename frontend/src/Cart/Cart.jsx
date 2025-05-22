@@ -1,5 +1,5 @@
 import PageTitle from "../components/PageTitle";
-import NavBar from "../components/Navbar";
+import Navbar from "../components/NavBar";
 import Footer from "../components/Footer";
 import "../CartStyles/Cart.css";
 import CartItem from "./CartItem";
@@ -25,7 +25,7 @@ function Cart() {
   return (
     <>
       <PageTitle title="Your Cart" />
-      <NavBar />
+      <Navbar />
       {cartItems.length === 0 ? (
         <div className="empty-cart-container">
           <div className="empty-cart-message">Your cart is empty</div>

@@ -31,7 +31,7 @@ function CheckoutPath({ activePath }) {
           completed={activePath >= index ? "true" : "false"}
         >
           <p className="checkoutPath-icon">{item.icon}</p>
-          <p className="checkoutPath-label">{item.name}</p>
+          <p className="checkoutPath-label">{item.label}</p>
         </div>
       ))}
     </div>
