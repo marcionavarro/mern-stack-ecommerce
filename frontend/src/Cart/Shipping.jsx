@@ -5,10 +5,13 @@ import Footer from "../components/Footer";
 import CheckoutPath from "./CheckoutPath";
 import "../CartStyles/Shipping.css";
 import { useDispatch, useSelector } from "react-redux";
+import { Country, State, City } from "country-state-city";
+import { set } from "mongoose";
 
 function Shipping() {
   const { shippingInfo } = useSelector((state) => state.cart);
   console.log(shippingInfo);
+
   const dispatch = useDispatch();
   const [address, setAddress] = useState("");
   const [pinCode, setPinCode] = useState("");
@@ -19,7 +22,7 @@ function Shipping() {
 
   const shippingInfoSubmit = (e) => {
     e.preventDefault();
-    console.log('Shipping Info Submitted')
+    console.log("Shipping Info Submitted");
   };
 
   return (
@@ -73,37 +76,64 @@ function Shipping() {
                 name="country"
                 id="country"
                 value={country}
-                onChange={(e) => setCountry(e.target.value)}
+                onChange={(e) => {
+                  setCountry(e.target.value);
+                  setState("");
+                  setCity("");
+                }}
               >
                 <option value="">Select a country</option>
-                <option value="US">United States</option>
-                <option value="IN">India</option>
+                {Country &&
+                  Country.getAllCountries().map((item) => (
+                    <option value={item.isoCode} key={item.isoCode}>
+                      {item.name}
+                    </option>
+                  ))}
               </select>
             </div>
 
-            <div className="shipping-form-group">
-              <label htmlFor="state">State</label>
-              <select
-                name="state"
-                id="state"
-                value={state}
-                onChange={(e) => setState(e.target.value)}
-              >
-                <option value="">Select a State</option>
-              </select>
-            </div>
+            {country && (
+              <div className="shipping-form-group">
+                <label htmlFor="state">State</label>
+                <select
+                  name="state"
+                  id="state"
+                  value={state}
+                  onChange={(e) => {
+                    setState(e.target.value);
+                    setCity("");
+                  }}
+                >
+                  <option value="">Select a State</option>
+                  {State &&
+                    State.getStatesOfCountry(country).map((item) => (
+                      <option value={item.isoCode} key={item.isoCode}>
+                        {item.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+            )}
 
-            <div className="shipping-form-group">
-              <label htmlFor="city">City</label>
-              <select
-                name="city"
-                id="city"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-              >
-                <option value="">Select a City</option>
-              </select>
-            </div>
+            {state && (
+              <div className="shipping-form-group">
+                <label htmlFor="city">City</label>
+                <select
+                  name="city"
+                  id="city"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                >
+                  <option value="">Select a City</option>
+                  {City &&
+                    City.getCitiesOfCountry(country, state).map((item) => (
+                      <option value={item.name} key={item.name}>
+                        {item.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+            )}
           </div>
 
           <button className="shipping-submit-btn">Continue</button>
