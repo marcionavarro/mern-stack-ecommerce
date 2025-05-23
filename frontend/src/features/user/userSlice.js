@@ -174,11 +174,13 @@ export const resetPassword = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    user: null,
+    user: localStorage.getItem("user")
+      ? JSON.parse(localStorage.getItem("user"))
+      : null,
     loading: false,
     error: null,
     success: false,
-    isAuthenticated: false,
+    isAuthenticated: localStorage.getItem("isAuthenticated") === "true",
     message: null,
   },
   reducers: {
@@ -202,6 +204,13 @@ const userSlice = createSlice({
         state.success = action.payload.success;
         state.user = action.payload?.user || null;
         state.isAuthenticated = Boolean(action.payload?.user);
+
+        /* Store in localStorage */
+        localStorage.setItem("user", JSON.stringify(state.user));
+        localStorage.setItem(
+          "isAuthenticated",
+          JSON.stringify(state.isAuthenticated)
+        );
       })
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
@@ -225,6 +234,13 @@ const userSlice = createSlice({
         state.user = action.payload?.user || null;
         state.isAuthenticated = Boolean(action.payload?.user);
         console.log(state.user);
+
+        /* Store in localStorage */
+        localStorage.setItem("user", JSON.stringify(state.user));
+        localStorage.setItem(
+          "isAuthenticated",
+          JSON.stringify(state.isAuthenticated)
+        );
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
@@ -245,12 +261,26 @@ const userSlice = createSlice({
         state.error = null;
         state.user = action.payload?.user || null;
         state.isAuthenticated = Boolean(action.payload?.user);
+
+        /* Store in localStorage */
+        localStorage.setItem("user", JSON.stringify(state.user));
+        localStorage.setItem(
+          "isAuthenticated",
+          JSON.stringify(state.isAuthenticated)
+        );
       })
       .addCase(loadUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload?.message || "Failed to user profile";
         state.user = null;
         state.isAuthenticated = false;
+
+        if (action.payload?.statusCode === 401) {
+          state.user = null;
+          state.isAuthenticated = false;
+          localStorage.removeItem("user");
+          localStorage.removeItem("isAuthenticated");
+        }
       });
 
     // Logout User
@@ -264,6 +294,8 @@ const userSlice = createSlice({
         state.error = null;
         state.user = null;
         state.isAuthenticated = false;
+        localStorage.removeItem("user");
+        localStorage.removeItem("isAuthenticated");
       })
       .addCase(logout.rejected, (state, action) => {
         state.loading = false;
