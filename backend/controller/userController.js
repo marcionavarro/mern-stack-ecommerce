@@ -5,10 +5,13 @@ import User from "../models/userModel.js";
 import { sendToken } from "../utils/jwtToken.js";
 import { sendEmail } from "../utils/sendEmail.js";
 import { v2 as cloudinary } from "cloudinary";
+import { createStripeCustomer } from "../utils/stripe.js";
 
 // Register
 export const registerUser = handleAsyncError(async (req, res, next) => {
   const { name, email, password, avatar } = req.body;
+  /* const customer = await createStripeCustomer({ name, email });
+  console.log("CUSTOMER:: ", customer); */
   const myCloud = await cloudinary.uploader.upload(avatar, {
     folder: "avatars",
     width: 150,
@@ -80,7 +83,9 @@ export const requestPasswordReset = handleAsyncError(async (req, res, next) => {
     );
   }
 
-  const resetPasswordUrl = `${req.protocol}://${req.get('host')}/reset/${resetToken}`;
+  const resetPasswordUrl = `${req.protocol}://${req.get(
+    "host"
+  )}/reset/${resetToken}`;
   const message = `Use the following link to reset your password: ${resetPasswordUrl} 
   \n\n This link will expire in 30 minutes. \n\n If you didn't request a password
   reset, please ignore this message.`;
