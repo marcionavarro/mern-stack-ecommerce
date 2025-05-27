@@ -19,10 +19,6 @@ function Payment() {
   const { user } = useSelector((state) => state.user);
   const { shippingInfo } = useSelector((state) => state.cart);
 
-  console.log(shippingInfo);
-  console.log(user);
-
-  // Carrega a chave publicável do Stripe apenas uma vez
   useEffect(() => {
     const fetchKey = async () => {
       const { data: keyData } = await axios.get("/api/v1/getKey");
@@ -38,7 +34,6 @@ function Payment() {
       amount,
     });
     setBillingDetails({
-      description: "Ecommerce Website Payment Transaction",
       name: user.name,
       email: user.email,
       phone: shippingInfo.phoneNumber,
