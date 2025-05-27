@@ -1,22 +1,80 @@
-import React from "react";
-import "../CartStyles/PaymentSuccess.css";
+import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import PageTitle from "../components/PageTitle";
+import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
+import "../CartStyles/PaymentSuccess.css";
+import { useDispatch, useSelector } from "react-redux";
 
 function PaymentSuccess() {
   const [searchParams] = useSearchParams();
   const reference = searchParams.get("reference");
+  const { cartItems, shippingInfo } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const createOrderData = async () => {
+      try {
+        const orderItem = JSON.parse(sessionStorage.getItem("orderItem"));
+        const orderData = {
+          shippingInfo: {
+            address: shippingInfo.address,
+            city: shippingInfo.city,
+            state: shippingInfo.state,
+            country: shippingInfo.country,
+            pinCode: shippingInfo.pinCode,
+            phoneNo: shippingInfo.phoneNumber,
+          },
+          orderItems: cartItems.map((item) => ({
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            image: item.image,
+            product: item.product,
+          })),
+          paymentInfo: {
+            id: reference,
+            status: "succeeded",
+          },
+          itemPrice: orderItem.subtotal,
+          taxPrice: orderItem.tax,
+          shippingPrice: orderItem.shippingCharges,
+          totalPrice: orderItem.total,
+        };
+        console.log("Sending Data", orderData);
+      } catch (error) {
+        console.error("Error creating order:", error.message);
+        toast.error(error.message || "Error creating order", {
+          position: "top-center",
+          autoClose: 3000,
+        });
+      }
+    };
+    createOrderData();
+  }, [reference]);
 
   return (
-    <div className="payment-success-container">
-      <div className="success-icon">
-        <div className="checkmark"></div>
+    <>
+      <PageTitle title="Payment Status" />
+      <NavBar />
+      <div className="payment-success-container">
+        <div className="success-content">
+          <div className="success-icon">
+            <div className="checkmark"></div>
+          </div>
+          <h1>Order Confirmed!</h1>
+          <p>
+            Your payment was successful. Reference ID.{" "}
+            <strong>{reference}</strong>
+          </p>
+          <Link to="/orders/user" className="explore-btn">
+            View Orders
+          </Link>
+        </div>
       </div>
-      <h1>Order Confirmed!</h1>
-      <p>
-        Your payment was successful. Reference ID. <strong>{reference}</strong>
-      </p>
-      <Link to="/" className="explore-btn">Explore more products</Link>
-    </div>
+      <Footer />
+    </>
   );
 }
 

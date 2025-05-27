@@ -139,8 +139,8 @@ function Shipping() {
                 >
                   <option value="">Select a City</option>
                   {City &&
-                    City.getCitiesOfCountry(country, state).map((item) => (
-                      <option value={item.name} key={item.name}>
+                    City.getCitiesOfCountry(country, state).map((item, idx) => (
+                      <option value={item.name} key={idx}>
                         {item.name}
                       </option>
                     ))}
