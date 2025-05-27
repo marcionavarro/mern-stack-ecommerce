@@ -47,8 +47,6 @@ function Payment() {
         country: shippingInfo.country,
       },
     });
-    console.log("BILLINGDETAILS:: ", billingDetails);
-    console.log("ORDER_DATA:: ", orderData);
     setPaymentId(orderData.order.id);
     setClientSecret(orderData.order.client_secret);
   };

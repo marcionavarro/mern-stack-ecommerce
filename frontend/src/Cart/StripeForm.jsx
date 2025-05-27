@@ -37,7 +37,7 @@ function StripeForm({ clientSecret, billingDetails, paymentId }) {
       });
       dispatch(removeMessage());
       setTimeout(() => {
-        navigate(`/api/v1/paymentSuccess?reference=${paymentId}`);
+        navigate(`/paymentSuccess?reference=${paymentId}`);
       }, 3000);
     }
   };
