@@ -17,6 +17,6 @@ export const processPayment = handleAsyncError(async (req, res) => {
 // Sen API Key
 export const sendAPIKey = handleAsyncError(async (req, res) => {
   res.status(200).json({
-    key: process.env.STRIPE_SECRET,
+    key: process.env.STRIPE_PUBLISHABLE_KEY,
   });
 });
