@@ -5,7 +5,7 @@ import { removeErrors, removeMessage } from "../features/cart/cartSlice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-function StripeForm({ clientSecret, billingDetails }) {
+function StripeForm({ clientSecret, billingDetails, paymentId }) {
   const stripe = useStripe();
   const elements = useElements();
   const dispatch = useDispatch();
@@ -36,7 +36,9 @@ function StripeForm({ clientSecret, billingDetails }) {
         toastId: "cart-update",
       });
       dispatch(removeMessage());
-      navigate("/api/v1/paymentVerification");
+      setTimeout(() => {
+        navigate(`/api/v1/paymentSuccess?reference=${paymentId}`);
+      }, 3000);
     }
   };
 

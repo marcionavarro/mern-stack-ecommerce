@@ -1,6 +1,5 @@
 import { stripe } from "../utils/stripe.js";
 import handleAsyncError from "../middleware/handleAsyncError.js";
-import crypto from "crypto";
 
 export const processPayment = handleAsyncError(async (req, res) => {
   const options = {
@@ -13,7 +12,6 @@ export const processPayment = handleAsyncError(async (req, res) => {
 
   res.status(200).json({
     success: true,
-    payment_id: order.id,
     order,
   });
 });
@@ -25,11 +23,3 @@ export const sendAPIKey = handleAsyncError(async (req, res) => {
   });
 });
 
-// Payment Verification
-export const paymentVerification = handleAsyncError(async (req, res) => {
-  console.log(req.body);
-
-  res.status(200).json({
-    success: true,
-  });
-});

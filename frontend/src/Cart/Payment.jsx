@@ -10,12 +10,14 @@ import StripeForm from "./StripeForm";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useSelector } from "react-redux";
+import { set } from "mongoose";
 
 function Payment() {
   const orderItem = JSON.parse(sessionStorage.getItem("orderItem"));
   const [clientSecret, setClientSecret] = useState("");
   const [stripePromise, setStripePromise] = useState(null);
   const [billingDetails, setBillingDetails] = useState({});
+  const [paymentId, setPaymentId] = useState(null);
   const { user } = useSelector((state) => state.user);
   const { shippingInfo } = useSelector((state) => state.cart);
 
@@ -45,7 +47,9 @@ function Payment() {
         country: shippingInfo.country,
       },
     });
-    console.log(billingDetails);
+    console.log("BILLINGDETAILS:: ", billingDetails);
+    console.log("ORDER_DATA:: ", orderData);
+    setPaymentId(orderData.order.id);
     setClientSecret(orderData.order.client_secret);
   };
 
@@ -73,6 +77,7 @@ function Payment() {
                 <StripeForm
                   clientSecret={clientSecret}
                   billingDetails={billingDetails}
+                  paymentId={paymentId}
                 />
               </Elements>
             )
