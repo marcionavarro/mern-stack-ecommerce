@@ -1,14 +1,14 @@
+import { LaunchOutlined } from "@mui/icons-material";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import Footer from "../components/Footer";
+import Loader from "../components/Loader";
 import Navbar from "../components/NavBar";
 import PageTitle from "../components/PageTitle";
-import "../OrderStyles/MyOrders.css";
-import { LaunchOutlined } from "@mui/icons-material";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 import { getAllMyOrders, removeErrors } from "../features/order/orderSlice";
-import { toast } from "react-toastify";
-import Loader from "../components/Loader";
+import "../OrderStyles/MyOrders.css";
 
 function MyOrders() {
   const { orders, loading, error } = useSelector((state) => state.order);
