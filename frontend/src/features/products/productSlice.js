@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const getProduct = createAsyncThunk(
@@ -46,7 +46,7 @@ export const createReview = createAsyncThunk(
     try {
       const config = {
         headers: {
-          "Content-Type": "application.json",
+          "Content-Type": "application/json",
         },
       };
       const { data } = await axios.put(
