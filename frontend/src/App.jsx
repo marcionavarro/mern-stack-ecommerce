@@ -21,6 +21,7 @@ import Payment from "./Cart/Payment";
 import PaymentSuccess from "./Cart/PaymentSuccess";
 import MyOrders from "./Orders/MyOrders";
 import OrderDetails from "./Orders/OrderDetails";
+import Dashboard from "./Admin/Dashboard";
 
 export default function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -81,6 +82,11 @@ export default function App() {
         <Route
           path="/order/:orderId"
           element={<ProtectedRoute element={<OrderDetails />} />}
+        />
+        {/* Admin Routes */}
+        <Route
+          path="/admin/dashboard"
+          element={<ProtectedRoute element={<Dashboard />} adminOnly={true} />}
         />
       </Routes>
       {isAuthenticated && <UserDashboard user={user} />}
