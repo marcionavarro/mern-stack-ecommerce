@@ -2,11 +2,32 @@ import Product from "./../models/productModel.js";
 import HandleError from "./../utils/handleError.js";
 import handleAsyncError from "../middleware/handleAsyncError.js";
 import APIFunctionality from "./../utils/apiFunctionality.js";
+import { v2 as cloudinary } from "cloudinary";
 
 //http://localhost:8000/api/v1/product/67af51402e655bea63b027f1?keyword=shirt
 
 // Creating Products
 export const createProducts = handleAsyncError(async (req, res, next) => {
+  let image = [];
+  if (typeof req.body.image === "string") {
+    image.push(req.body.image);
+  } else {
+    image = req.body.image;
+  }
+
+  const imageLinks = [];
+  for (let i = 0; i < image.length; i++) {
+    const result = await cloudinary.uploader.upload(image[i], {
+      folder: "products",
+    });
+
+    imageLinks.push({
+      public_id: result.public_id,
+      url: result.secure_url,
+    });
+  }
+
+  req.body.image = imageLinks;
   req.body.user = req.user.id;
 
   const product = await Product.create(req.body);
@@ -179,8 +200,8 @@ export const deleteReview = handleAsyncError(async (req, res, next) => {
   );
   res.status(200).json({
     success: true,
-    message: "Review Deleted Successfully"
-  })
+    message: "Review Deleted Successfully",
+  });
 });
 
 // Admin - Getting all products

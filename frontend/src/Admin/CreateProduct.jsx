@@ -11,6 +11,7 @@ function CreateProduct() {
   const [category, setCategory] = useState("");
   const [stock, setStock] = useState("");
   const [image, setImage] = useState([]);
+  const [imagePreview, setImagePreview] = useState([]);
 
   const categories = ["glass", "shirt", "mobile", "dress", "tv"];
 
@@ -24,8 +25,25 @@ function CreateProduct() {
     myForm.setName("stock", stock);
 
     image.forEach((img) => {
-        myForm.append("image", img)
-    })
+      myForm.append("image", img);
+    });
+  };
+
+  const createProductImage = (e) => {
+    const files = Array.from(e.target.files);
+    setImage([]);
+    setImagePreview([]);
+
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setImagePreview((old) => [...old, reader.result]);
+          setImage((old) => [...old, reader.result]);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
   return (
@@ -45,7 +63,7 @@ function CreateProduct() {
             className="form-input"
             placeholder="Enter Product Name"
             value={name}
-            onChange={(e) => setName(e.target.name)}
+            onChange={(e) => setName(e.target.value)}
             required
           />
           <input
@@ -54,7 +72,7 @@ function CreateProduct() {
             className="form-input"
             placeholder="Enter Product Price"
             value={price}
-            onChange={(e) => setPrice(e.target.price)}
+            onChange={(e) => setPrice(e.target.value)}
             required
           />
           <input
@@ -63,7 +81,7 @@ function CreateProduct() {
             className="form-input"
             placeholder="Enter Product Description"
             value={description}
-            onChange={(e) => setDescription(e.target.description)}
+            onChange={(e) => setDescription(e.target.value)}
             required
           />
           <select
@@ -86,7 +104,7 @@ function CreateProduct() {
             className="form-input"
             placeholder="Enter Product Stock"
             value={stock}
-            onChange={(e) => setStock(e.target.stock)}
+            onChange={(e) => setStock(e.target.value)}
             required
           />
           <div className="file-input-container">
@@ -95,18 +113,19 @@ function CreateProduct() {
               name="image"
               accept="image/"
               className="form-input-file"
-              value={image}
-              onChange={(e) => setImage(e.target.image)}
+              onChange={createProductImage}
               multiple
             />
           </div>
-          <div className="image-preview-container">
-            <img
-              key="1"
-              src=""
-              alt="Product Review"
-              className="image-preview"
-            />
+        <div className="image-preview-container">
+            {imagePreview.map((img, index) => (
+              <img
+                key={index}
+                src={img}
+                alt="Product Review"
+                className="image-preview"
+              />
+            ))}
           </div>
           <button className="submit-btn">Create</button>
         </form>
