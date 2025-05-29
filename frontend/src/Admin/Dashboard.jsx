@@ -1,21 +1,21 @@
 
 import {
-    AddBox,
-    AttachMoney,
-    Check,
-    Dashboard as DashboardIcon,
-    Error,
-    Instagram,
-    Inventory,
-    LinkedIn,
-    People,
-    ShoppingCart,
-    Star,
-    YouTube
+  AddBox,
+  AttachMoney,
+  Check,
+  Dashboard as DashboardIcon,
+  Error,
+  Instagram,
+  Inventory,
+  LinkedIn,
+  People,
+  ShoppingCart,
+  Star,
+  YouTube
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import "../AdminStyles/Dashboard.css";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/NavBar";
 import PageTitle from "../components/PageTitle";
 
 function Dashboard() {
