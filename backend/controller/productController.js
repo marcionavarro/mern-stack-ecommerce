@@ -4,8 +4,6 @@ import handleAsyncError from "../middleware/handleAsyncError.js";
 import APIFunctionality from "./../utils/apiFunctionality.js";
 import { v2 as cloudinary } from "cloudinary";
 
-//http://localhost:8000/api/v1/product/67af51402e655bea63b027f1?keyword=shirt
-
 // Creating Products
 export const createProducts = handleAsyncError(async (req, res, next) => {
   let image = [];
