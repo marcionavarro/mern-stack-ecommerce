@@ -26,7 +26,7 @@ function ProductsList() {
     }
   }, [dispatch, error]);
 
-  if (products || products.length === 0) {
+  if (!products || products.length === 0) {
     return (
       <>
         <PageTitle title="No Products Found" />
