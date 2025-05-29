@@ -1,8 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import "../AdminStyles/CreateProduct.css";
 import Footer from "../components/Footer";
 import Navbar from "../components/NavBar";
 import PageTitle from "../components/PageTitle";
+import {
+    createProduct,
+    removeErrors,
+    removeSuccess,
+} from "../features/admin/adminSlice";
 
 function CreateProduct() {
   const [name, setName] = useState("");
@@ -12,21 +19,25 @@ function CreateProduct() {
   const [stock, setStock] = useState("");
   const [image, setImage] = useState([]);
   const [imagePreview, setImagePreview] = useState([]);
+  const { success, loading, error } = useSelector((state) => state.admin);
+  const dispatch = useDispatch();
 
-  const categories = ["glass", "shirt", "mobile", "dress", "tv"];
+  const categories = ["glass", "shirt", "mobile", "dress", "tv", "pant"];
 
   const createProductSubmit = (e) => {
     e.preventDefault();
     const myForm = new FormData();
-    myForm.setName("name", name);
-    myForm.setName("price", price);
-    myForm.setName("description", description);
-    myForm.setName("category", category);
-    myForm.setName("stock", stock);
+    myForm.set("name", name);
+    myForm.set("price", price);
+    myForm.set("description", description);
+    myForm.set("category", category);
+    myForm.set("stock", stock);
 
     image.forEach((img) => {
       myForm.append("image", img);
     });
+
+    dispatch(createProduct(myForm));
   };
 
   const createProductImage = (e) => {
@@ -45,6 +56,28 @@ function CreateProduct() {
       reader.readAsDataURL(file);
     });
   };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error, { position: "top-center", autoClose: 3000 });
+      dispatch(removeErrors());
+    }
+
+    if (success) {
+      toast.success("Product create Succesfully", {
+        position: "top-center",
+        autoClose: 3000,
+      });
+      dispatch(removeSuccess());
+      setName("");
+      setPrice("");
+      setDescription("");
+      setCategory("");
+      setStock("");
+      setImage([]);
+      setImagePreview([]);
+    }
+  }, [dispatch, error, success]);
 
   return (
     <>
@@ -117,7 +150,7 @@ function CreateProduct() {
               multiple
             />
           </div>
-        <div className="image-preview-container">
+          <div className="image-preview-container">
             {imagePreview.map((img, index) => (
               <img
                 key={index}
@@ -127,7 +160,9 @@ function CreateProduct() {
               />
             ))}
           </div>
-          <button className="submit-btn">Create</button>
+          <button className="submit-btn" disabled={loading}>
+            {loading ? "Creating Product..." : "Create"}
+          </button>
         </form>
       </div>
       <Footer />
