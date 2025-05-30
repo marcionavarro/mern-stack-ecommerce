@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PageTitle from "../components/PageTitle";
-import Navbar from "../components/NavBar";
+import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import "../CartStyles/Payment.css";
 import CheckoutPath from "./CheckoutPath";

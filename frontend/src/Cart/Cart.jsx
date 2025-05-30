@@ -1,5 +1,5 @@
 import PageTitle from "../components/PageTitle";
-import Navbar from "../components/NavBar";
+import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import "../CartStyles/Cart.css";
 import CartItem from "./CartItem";

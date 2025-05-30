@@ -1,5 +1,5 @@
 
-.navbar {
+.Navbar {
     position: fixed;
     top: 0;
     width: 100%;
@@ -10,7 +10,7 @@
 
   }
   
-  .navbar-container {
+  .Navbar-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1.5rem;
@@ -20,7 +20,7 @@
     justify-content: space-between;
   }
   
-  .navbar-logo a {
+  .Navbar-logo a {
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--primary-light);
@@ -28,16 +28,16 @@
     transition: color 0.2s ease;
   }
   
-  .navbar-logo a:hover {
+  .Navbar-logo a:hover {
     color: var(--primary-main);
   }
   
-  .navbar-links {
+  .Navbar-links {
     flex: 1;
     margin-left: 2rem;
   }
   
-  .navbar-links ul {
+  .Navbar-links ul {
     display: flex;
     list-style: none;
     gap: 2.5rem;
@@ -45,14 +45,14 @@
     padding: 0;
   }
   
-  .navbar-links li a {
+  .Navbar-links li a {
     color: var(--text-primary);
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s ease;
   }
   
-  .navbar-links li a:hover {
+  .Navbar-links li a:hover {
     color: var(--primary-light);
   }
   
@@ -62,7 +62,7 @@
     gap: 0.5rem;
   }
   
-  .navbar-icons {
+  .Navbar-icons {
     display: flex;
     align-items: center;
     gap: 1.5rem;
@@ -126,13 +126,13 @@
     background-color: var(--primary-dark);
   }
   
-  .navbar-hamburger {
+  .Navbar-hamburger {
     display: none;
     cursor: pointer;
   }
   
   @media (max-width: 768px) {
-    .navbar-links {
+    .Navbar-links {
       display: none;
       position: absolute;
       top: 4rem;
@@ -144,25 +144,25 @@
       box-shadow: var(--shadow-md);
     }
   
-    .navbar-links.active {
+    .Navbar-links.active {
       display: block;
     }
   
-    .navbar-links ul {
+    .Navbar-links ul {
       flex-direction: column;
       gap: 1rem;
     }
   
-    .navbar-icons {
+    .Navbar-icons {
       gap: 1.25rem;
     }
   
-    .navbar-hamburger {
+    .Navbar-hamburger {
       display: block;
       margin-left: 1rem;
     }
   
-    .navbar-links.active li {
+    .Navbar-links.active li {
       padding: 0.5rem 0;
     }
   
@@ -170,12 +170,12 @@
       width: 100%;
       justify-content: flex-start;
     }
-    .navbar-icons{
+    .Navbar-icons{
       width: 300px;
     }
   }
   
-  .navbar-links {
+  .Navbar-links {
     transition: all 0.3s ease;
   }
   

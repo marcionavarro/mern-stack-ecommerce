@@ -29,15 +29,15 @@ function Navbar() {
   };
 
   return (
-    <nav className="navbar">
-      <div className="navbar-container">
-        <div className="navbar-logo">
+    <nav className="Navbar">
+      <div className="Navbar-container">
+        <div className="Navbar-logo">
           <Link to="/" onClick={() => setIsMenuOpen(false)}>
             ShopeEasy
           </Link>
         </div>
 
-        <div className={`navbar-links ${isMenuOpen ? "active" : ""}`}>
+        <div className={`Navbar-links ${isMenuOpen ? "active" : ""}`}>
           <ul>
             <li>
               <Link to="/" onClick={() => setIsMenuOpen(false)}>
@@ -56,7 +56,7 @@ function Navbar() {
           </ul>
         </div>
 
-        <div className="navbar-icons">
+        <div className="Navbar-icons">
           <div className="search-container">
             <form
               className={`search-form ${isSearchOpen ? "active" : ""}`}
@@ -93,7 +93,7 @@ function Navbar() {
             </Link>
           )}
 
-          <div className="navbar-hamburger" onClick={toggleMenu}>
+          <div className="Navbar-hamburger" onClick={toggleMenu}>
             {isMenuOpen ? (
               <CloseIcon className="icon" />
             ) : (

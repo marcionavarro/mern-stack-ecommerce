@@ -15,7 +15,7 @@ import {
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import "../AdminStyles/Dashboard.css";
-import Navbar from "../components/NavBar";
+import Navbar from "../components/Navbar";
 import PageTitle from "../components/PageTitle";
 
 function Dashboard() {

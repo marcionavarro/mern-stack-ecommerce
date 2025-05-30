@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PageTitle from "../components/PageTitle";
-import NavBar from "../components/NavBar";
+import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import CheckoutPath from "./CheckoutPath";
 import "../CartStyles/Shipping.css";
@@ -41,7 +41,7 @@ function Shipping() {
   return (
     <>
       <PageTitle title="Shipping Info" />
-      <NavBar />
+      <Navbar />
       <CheckoutPath activePath={0} />
       <div className="shipping-form-container">
         <div className="shipping-form-header">Shipping Details</div>

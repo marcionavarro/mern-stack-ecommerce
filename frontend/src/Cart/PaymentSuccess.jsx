@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import PageTitle from "../components/PageTitle";
-import NavBar from "../components/NavBar";
+import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Loader from "../components/Loader";
 import "../CartStyles/PaymentSuccess.css";
@@ -94,7 +94,7 @@ function PaymentSuccess() {
       ) : (
         <>
           <PageTitle title="Payment Status" />
-          <NavBar />
+          <Navbar />
           <div className="payment-success-container">
             <div className="success-content">
               <div className="success-icon">

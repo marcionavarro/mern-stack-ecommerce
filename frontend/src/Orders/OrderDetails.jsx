@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Footer from "../components/Footer";
 import Loader from "../components/Loader";
-import Navbar from "../components/NavBar";
+import Navbar from "../components/Navbar";
 import PageTitle from "../components/PageTitle";
 import { getOrderDetails, removeErrors } from "../features/order/orderSlice";
 import "../OrderStyles/OrderDetails.css";

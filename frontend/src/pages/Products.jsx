@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Footer from "../components/Footer";
 import Loader from "../components/Loader";
-import Navbar from "../components/NavBar";
+import Navbar from "../components/Navbar";
 import NoProducts from "../components/NoProducts";
 import PageTitle from "../components/PageTitle";
 import Pagination from "../components/Pagination";

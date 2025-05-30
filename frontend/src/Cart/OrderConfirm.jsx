@@ -1,7 +1,7 @@
 import React from "react";
 import "../CartStyles/OrderConfirm.css";
 import PageTitle from "../components/PageTitle";
-import Navbar from "../components/NavBar";
+import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useSelector } from "react-redux";
 import CheckoutPath from "./CheckoutPath";

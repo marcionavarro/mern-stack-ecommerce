@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import "../AdminStyles/CreateProduct.css";
 import Footer from "../components/Footer";
-import Navbar from "../components/NavBar";
+import Navbar from "../components/Navbar";
 import PageTitle from "../components/PageTitle";
 import {
     createProduct,
