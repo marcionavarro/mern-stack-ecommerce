@@ -8,10 +8,17 @@ import Footer from "../components/Footer";
 import Loader from "../components/Loader";
 import Navbar from "../components/Navbar";
 import PageTitle from "../components/PageTitle";
-import { fetchAdminProducts, removeErrors } from "../features/admin/adminSlice";
+import {
+  deleteProduct,
+  fetchAdminProducts,
+  removeErrors,
+  removeSuccess,
+} from "../features/admin/adminSlice";
 
 function ProductsList() {
-  const { products, loading, error } = useSelector((state) => state.admin);
+  const { products, loading, error, deleting } = useSelector(
+    (state) => state.admin
+  );
   console.log("Product List:: ", products);
   const dispatch = useDispatch();
 
@@ -25,6 +32,23 @@ function ProductsList() {
       dispatch(removeErrors());
     }
   }, [dispatch, error]);
+
+  const handleDelete = (productId) => {
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete this product ?"
+    );
+    if (isConfirmed) {
+      dispatch(deleteProduct(productId)).then((action) => {
+        if (action.type === "admin/deleteProduct/fulfilled") {
+          toast.success("Product Deleted Successfully", {
+            position: "top-center",
+            autoClose: 3000,
+          });
+          dispatch(removeSuccess());
+        }
+      });
+    }
+  };
 
   if (!products || products.length === 0) {
     return (
@@ -84,9 +108,17 @@ function ProductsList() {
                       <Link to={`/admin/product/${product._id}`}>
                         <Edit className="action-icon edit-icon" />
                       </Link>
-                      <Link to={`/admin/product/${product._id}`}>
-                        <Delete className="action-icon delete-icon" />
-                      </Link>
+                      <button
+                        className="action-icon delete-icon"
+                        onClick={() => handleDelete(product._id)}
+                        disabled={deleting[product._id]}
+                      >
+                        {deleting[product._id] ? (
+                          <Loader />
+                        ) : (
+                          <Delete className="action-icon delete-icon" />
+                        )}
+                      </button>
                     </td>
                   </tr>
                 ))}

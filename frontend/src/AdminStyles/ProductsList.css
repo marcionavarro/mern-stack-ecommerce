@@ -49,7 +49,7 @@
     font-size: 14px;
     font-weight: 500;
   }
-  
+
   .action-icon {
     margin-right: 10px;
     cursor: pointer;
@@ -68,20 +68,22 @@
   .edit-icon:hover {
     background-color: rgba(0, 123, 255, 0.1);
   }
-  
-  .delete-icon {
+
+  button.delete-icon {
     color: #f7364a;
+    border:none;
+    background: none;
   }
   
-  .delete-icon:hover {
+  button.delete-icon:hover {
     background-color: rgba(220, 53, 69, 0.1);
+    cursor: pointer; 
   }
   
   .loading-message {
     font-size: 18px;
     color: #555;
   }
-
 
   .no-admin-products-container {
     /* padding: 20px; */

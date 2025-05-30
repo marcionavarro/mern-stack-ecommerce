@@ -62,8 +62,10 @@ export const deleteProduct = createAsyncThunk(
   async (productId, { rejectWithValue }) => {
     try {
       const { data } = await axios.delete(`/api/v1/admin/product/${productId}`);
-      return productId;
+      console.log("deleteProduct::", data);
+      return { productId };
     } catch (error) {
+      console.log("ERROR", error);
       return rejectWithValue(error.response?.data || "Delete Product Failed");
     }
   }
@@ -77,7 +79,7 @@ const adminSlice = createSlice({
     success: false,
     loading: false,
     error: null,
-    deleteLoading: false,
+    deleting: {},
   },
   reducers: {
     removeErrors: (state) => {
@@ -145,18 +147,22 @@ const adminSlice = createSlice({
 
     // Delete Product
     builder
-      .addCase(deleteProduct.pending, (state) => {
-        state.deleteLoading = true;
-        state.error = null;
+      .addCase(deleteProduct.pending, (state, action) => {
+        const productId = action.meta.arg;
+        state.deleting[productId] = true;
       })
 
       .addCase(deleteProduct.fulfilled, (state, action) => {
-        state.deleteLoading = false;
-        state.products = state.products.filter(product => product._id !== action.payload.productId)
+        const productId = action.payload.productId;
+        state.deleting[productId] = false;
+        state.products = state.products.filter(
+          (product) => product._id !== productId
+        );
       })
 
       .addCase(deleteProduct.rejected, (state, action) => {
-        state.deleteLoading = false;
+        const productId = action.meta.arg;
+        state.deleting[productId] = false;
         state.error = action.payload?.message || "Delete Product Failed";
       });
   },
