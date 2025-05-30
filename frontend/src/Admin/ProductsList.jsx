@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import "../AdminStyles/ProductsList.css";
 import Footer from "../components/Footer";
 import Loader from "../components/Loader";
-import NavBar from "../components/NavBar";
+import Navbar from "../components/Navbar";
 import PageTitle from "../components/PageTitle";
 import { fetchAdminProducts, removeErrors } from "../features/admin/adminSlice";
 
@@ -30,7 +30,7 @@ function ProductsList() {
     return (
       <>
         <PageTitle title="No Products Found" />
-        <NavBar />
+        <Navbar />
         <div className="no-admin-products-container">
           <h1 className="product-list-title">Admin Products</h1>
           <p className="no-admin-products">No Products Found</p>
@@ -46,7 +46,7 @@ function ProductsList() {
       ) : (
         <>
           <PageTitle title="Product List" />
-          <NavBar />
+          <Navbar />
           <div className="product-list-container">
             <h1 className="product-list-title">All Products</h1>
             <table className="product-table">
@@ -81,10 +81,10 @@ function ProductsList() {
                     <td>{product.stock}</td>
                     <td>{new Date(product.createdAt).toLocaleString()}</td>
                     <td>
-                      <Link to={`/admin/products/${product._id}`}>
+                      <Link to={`/admin/product/${product._id}`}>
                         <Edit className="action-icon edit-icon" />
                       </Link>
-                      <Link to={`/admin/products/${product._id}`}>
+                      <Link to={`/admin/product/${product._id}`}>
                         <Delete className="action-icon delete-icon" />
                       </Link>
                     </td>
