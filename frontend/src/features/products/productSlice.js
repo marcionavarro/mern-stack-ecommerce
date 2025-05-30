@@ -12,9 +12,6 @@ export const getProduct = createAsyncThunk(
       if (keyword) {
         link += `&keyword=${keyword}`;
       }
-      /* const link = keyword
-        ? `/api/v1/products?keyword=${encodeURIComponent(keyword)}&page=${page}`
-        : `/api/v1/products?page=${page}`; */
       const { data } = await axios.get(link);
       console.log("Response", data);
       return data;
