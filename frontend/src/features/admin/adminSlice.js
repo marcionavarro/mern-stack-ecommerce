@@ -65,8 +65,21 @@ export const deleteProduct = createAsyncThunk(
       console.log("deleteProduct::", data);
       return { productId };
     } catch (error) {
-      console.log("ERROR", error);
       return rejectWithValue(error.response?.data || "Delete Product Failed");
+    }
+  }
+);
+
+// Fetch All Users
+export const fetchUsers = createAsyncThunk(
+  "admin/fetchUsers",
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(`/api/v1/admin/users"`);
+      console.log("fetchUsers::", data);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Failed to fetch users");
     }
   }
 );
@@ -80,6 +93,7 @@ const adminSlice = createSlice({
     loading: false,
     error: null,
     deleting: {},
+    users: [],
   },
   reducers: {
     removeErrors: (state) => {
@@ -164,6 +178,23 @@ const adminSlice = createSlice({
         const productId = action.meta.arg;
         state.deleting[productId] = false;
         state.error = action.payload?.message || "Delete Product Failed";
+      });
+
+    // Fetch All Users
+    builder
+      .addCase(fetchUsers.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+
+      .addCase(fetchUsers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.users = action.payload.users;
+      })
+
+      .addCase(fetchUsers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload?.message || "Failed to fetch users";
       });
   },
 });
