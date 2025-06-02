@@ -75,8 +75,7 @@ export const fetchUsers = createAsyncThunk(
   "admin/fetchUsers",
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`/api/v1/admin/users"`);
-      console.log("fetchUsers::", data);
+      const { data } = await axios.get(`/api/v1/admin/users`);
       return data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Failed to fetch users");
