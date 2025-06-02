@@ -91,7 +91,9 @@ export const getSingleUser = createAsyncThunk(
       const { data } = await axios.get(`/api/v1/admin/user/${id}`);
       return data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Failed to Fetch Single user");
+      return rejectWithValue(
+        error.response?.data || "Failed to Fetch Single user"
+      );
     }
   }
 );
@@ -99,13 +101,32 @@ export const getSingleUser = createAsyncThunk(
 // Update User Role
 export const updateUserRole = createAsyncThunk(
   "admin/updateUserRole",
-  async ({userId, role}, { rejectWithValue }) => {
+  async ({ userId, role }, { rejectWithValue }) => {
     try {
-      const { data } = await axios.put(`/api/v1/admin/user/${userId}`, {role});
-      console.log(role)
+      const { data } = await axios.put(`/api/v1/admin/user/${userId}`, {
+        role,
+      });
+      console.log(role);
       return data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Failed to update user role");
+      return rejectWithValue(
+        error.response?.data || "Failed to update user role"
+      );
+    }
+  }
+);
+
+// Delete User Profile
+export const deleteUser = createAsyncThunk(
+  "admin/deleteUser",
+  async (userId, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.delete(`/api/v1/admin/user/${userId}`);
+      return data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data || "Failed to delete user"
+      );
     }
   }
 );
@@ -121,6 +142,7 @@ const adminSlice = createSlice({
     deleting: {},
     users: [],
     user: {},
+    message: null,
   },
   reducers: {
     removeErrors: (state) => {
@@ -128,6 +150,9 @@ const adminSlice = createSlice({
     },
     removeSuccess: (state) => {
       state.success = false;
+    },
+    clearMessage: (state) => {
+      state.message = null;
     },
   },
   extraReducers: (builder) => {
@@ -241,7 +266,7 @@ const adminSlice = createSlice({
         state.error = action.payload?.message || "Failed to Fetch Single user";
       });
 
-      // Update User role
+    // Update User role
     builder
       .addCase(updateUserRole.pending, (state) => {
         state.loading = true;
@@ -257,8 +282,25 @@ const adminSlice = createSlice({
         state.loading = false;
         state.error = action.payload?.message || "Failed to update role";
       });
+
+    // Delte User profile
+    builder
+      .addCase(deleteUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+
+      .addCase(deleteUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.message = action.payload.message;
+      })
+
+      .addCase(deleteUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload?.message || "Failed to update role";
+      });
   },
 });
 
-export const { removeErrors, removeSuccess } = adminSlice.actions;
+export const { removeErrors, removeSuccess, clearMessage } = adminSlice.actions;
 export default adminSlice.reducer;
