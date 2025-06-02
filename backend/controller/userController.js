@@ -5,7 +5,6 @@ import User from "../models/userModel.js";
 import { sendToken } from "../utils/jwtToken.js";
 import { sendEmail } from "../utils/sendEmail.js";
 import { v2 as cloudinary } from "cloudinary";
-import { createStripeCustomer } from "../utils/stripe.js";
 
 // Register
 export const registerUser = handleAsyncError(async (req, res, next) => {
