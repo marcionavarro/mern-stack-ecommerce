@@ -148,6 +148,7 @@ export const deleteOrder = createAsyncThunk(
   async (orderId, { rejectWithValue }) => {
     try {
       const { data } = await axios.delete(`/api/v1/admin/order/${orderId}`);
+      console.log(data)
       return data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Failed to Delete Order");
@@ -309,7 +310,7 @@ const adminSlice = createSlice({
         state.error = action.payload?.message || "Failed to update role";
       });
 
-    // Delte User profile
+    // Delete User profile
     builder
       .addCase(deleteUser.pending, (state) => {
         state.loading = true;
@@ -323,7 +324,7 @@ const adminSlice = createSlice({
 
       .addCase(deleteUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload?.message || "Failed to update role";
+        state.error = action.payload?.message || "Failed to delete role";
       });
 
     // Fetch All Orders
@@ -354,7 +355,7 @@ const adminSlice = createSlice({
       .addCase(deleteOrder.fulfilled, (state, action) => {
         state.loading = false;
         state.success = action.payload.success;
-        state.message = action.payload.message;
+        state.message = action.payload?.message;
       })
 
       .addCase(deleteOrder.rejected, (state, action) => {

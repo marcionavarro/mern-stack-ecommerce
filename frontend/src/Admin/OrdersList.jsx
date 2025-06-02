@@ -4,28 +4,52 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "../AdminStyles/OrdersList.css";
 import Footer from "../components/Footer";
+import Loader from "../components/Loader";
 import Navbar from "../components/Navbar";
 import PageTitle from "../components/PageTitle";
-import Loader from "../components/Loader";
 
-import { fetchAllOrders, removeErrors } from "../features/admin/adminSlice";
 import { toast } from "react-toastify";
+import {
+  clearMessage,
+  deleteOrder,
+  fetchAllOrders,
+  removeErrors,
+  removeSuccess,
+} from "../features/admin/adminSlice";
 
 function OrdersList() {
-  const { orders, loading, error } = useSelector((state) => state.admin);
+  const { orders, loading, error, success, message } = useSelector(
+    (state) => state.admin
+  );
   const dispatch = useDispatch();
   console.log("OrdersList:: ", orders);
+  console.log('message:: ', message)
 
   useEffect(() => {
     dispatch(fetchAllOrders());
   }, []);
 
+  const handleDelete = (orderId) => {
+    const confirm = window.confirm(
+      "Are you sure you want to delete this user ?"
+    );
+    if (confirm) {
+      dispatch(deleteOrder(orderId));
+    }
+  };
+
   useEffect(() => {
     if (error) {
-      toast.error(error.message, { position: "top-center", autoClose: 3000 });
+      toast.error(error, { position: "top-center", autoClose: 3000 });
       dispatch(removeErrors());
     }
-  }, [dispatch, error]);
+    if (success) {
+      toast.success(message, { position: "top-center", autoClose: 3000 });
+      dispatch(removeSuccess());
+      dispatch(clearMessage());
+      dispatch(fetchAllOrders());
+    }
+  }, [dispatch, error, success, message]);
 
   return (
     <>
@@ -74,7 +98,10 @@ function OrdersList() {
                             <Edit />
                           </Link>
 
-                          <button className="action-icon delete-icon">
+                          <button
+                            className="action-icon delete-icon"
+                            onClick={() => handleDelete(order._id)}
+                          >
                             <Delete />
                           </button>
                         </td>
