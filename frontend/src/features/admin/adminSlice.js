@@ -155,7 +155,7 @@ const adminSlice = createSlice({
     user: {},
     message: null,
     orders: [],
-    totalAmount,
+    totalAmount: 0,
   },
   reducers: {
     removeErrors: (state) => {

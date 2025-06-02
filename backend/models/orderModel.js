@@ -55,7 +55,7 @@ const orderSchema = new mongoose.Schema({
   orderStatus: {
     type: String,
     required: true,
-    default: "Proccessing"
+    default: "Processing"
   },
   user: {
     type: mongoose.Schema.ObjectId,

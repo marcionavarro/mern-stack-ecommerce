@@ -56,7 +56,7 @@
   }
   
 
-  .order-details__status.proccessing {
+  .order-details__status.processing {
     color: #ffa500;
     background: rgba(255, 165, 0, 0.2);
     padding: 0.2rem 0.5rem;
