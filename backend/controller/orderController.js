@@ -114,7 +114,7 @@ async function updateQuantity(id, quantity) {
   const product = await Product.findById(id);
 
   if (!product) {
-    return next(new HandleError("Product not found", 404));
+    return  new Error("Product not found");
   }
 
   product.stock -= quantity;

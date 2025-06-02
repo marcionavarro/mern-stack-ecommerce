@@ -148,10 +148,30 @@ export const deleteOrder = createAsyncThunk(
   async (orderId, { rejectWithValue }) => {
     try {
       const { data } = await axios.delete(`/api/v1/admin/order/${orderId}`);
-      console.log(data)
       return data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Failed to Delete Order");
+    }
+  }
+);
+
+// Update Order Status
+export const updateOrderStatus = createAsyncThunk(
+  "admin/updateOrderStatus",
+  async ({ orderId, status }, { rejectWithValue }) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const { data } = await axios.put(`/api/v1/admin/order/${orderId}`, {
+        status,
+        config,
+      });
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Failed to Update Order");
     }
   }
 );
@@ -170,6 +190,7 @@ const adminSlice = createSlice({
     message: null,
     orders: [],
     totalAmount: 0,
+    order: {},
   },
   reducers: {
     removeErrors: (state) => {
@@ -345,7 +366,7 @@ const adminSlice = createSlice({
         state.error = action.payload?.message || "Failed to Fetch Orders";
       });
 
-       // Delete Order
+    // Delete Order
     builder
       .addCase(deleteOrder.pending, (state) => {
         state.loading = true;
@@ -361,6 +382,24 @@ const adminSlice = createSlice({
       .addCase(deleteOrder.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload?.message || "Failed to Delete Orders";
+      });
+
+    // Update Order Status
+    builder
+      .addCase(updateOrderStatus.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+
+      .addCase(updateOrderStatus.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = action.payload.success;
+        state.order = action.payload.order;
+      })
+
+      .addCase(updateOrderStatus.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload?.message || "Failed to Udpate Order";
       });
   },
 });
