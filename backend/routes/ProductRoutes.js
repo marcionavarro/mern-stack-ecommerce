@@ -30,7 +30,7 @@ router
   .put(verifyUserAuth, roleBasedAccess("admin"), updateProduct)
   .delete(verifyUserAuth, roleBasedAccess("admin"), deleteProduct);
 router
-  .route("/reviews")
+  .route("/admin/reviews")
   .get(verifyUserAuth, roleBasedAccess("admin"), getReview)
   .delete(verifyUserAuth, roleBasedAccess("admin"), deleteReview);
 

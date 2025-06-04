@@ -427,7 +427,7 @@ const adminSlice = createSlice({
 
       .addCase(fetchProductReviews.fulfilled, (state, action) => {
         state.loading = false;
-        state.reviews = action.payload.reviews;
+        state.reviews = action.payload?.reviews;
       })
 
       .addCase(fetchProductReviews.rejected, (state, action) => {
