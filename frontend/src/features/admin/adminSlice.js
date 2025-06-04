@@ -181,7 +181,7 @@ export const fetchProductReviews = createAsyncThunk(
   "admin/fetchProductReviews",
   async (productId, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`/api/v1/reviews?id=${productId}`);
+      const { data } = await axios.get(`/api/v1/admin/reviews?id=${productId}`);
       return data;
     } catch (error) {
       return rejectWithValue(
