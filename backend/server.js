@@ -1,9 +1,11 @@
-import app from "./app.js";
-import dotenv from "dotenv";
-import { connectMongoDatabase } from "./config/db.js";
 import { v2 as cloudinary } from "cloudinary";
+import dotenv from "dotenv";
+import app from "./app.js";
+import { connectMongoDatabase } from "./config/db.js";
 
-dotenv.config({ path: "backend/config/config.env" });
+if (process.env.NODE_ENV !== "PRODUCTION") {
+  dotenv.config({ path: "backend/config/config.env" });
+}
 
 connectMongoDatabase();
 
