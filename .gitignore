@@ -1,9 +1,11 @@
 /node_modules
-*.txt
+/frontend/node_modules
+/frontend/dist
+backend/config/config.env
 
+*.txt
 .idea/.gitignore
 .idea/MERN_Ecommerce.iml
 .idea/modules.xml
 .idea/vcs.xml
 
-backend/config/config.env
